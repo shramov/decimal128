@@ -8,16 +8,16 @@
 #if defined(__GLIBCXX__) && !defined(__clang__)
 #include <decimal/decimal>
 
-#define CHECK_STD128(dec, bin) do { \
+#define CHECK_STD128(str, dec, bin) do { \
 		std::decimal::decimal128 std(dec), copy; \
 		memcpy((void *) &copy, &bin, sizeof(copy)); \
-		ASSERT_EQ(std, copy); \
+		ASSERT_EQ(std, copy) << "Invalid decimal value for " << str; \
 	} while (0)
 #else
-#define CHECK_STD128(dec, bin)
+#define CHECK_STD128(str, dec, bin)
 #endif
 
-#define CHECK_D128(binary, stddecimal, sig, m, e) do { \
+#define CHECK_D128(str, binary, stddecimal, sig, m, e) do { \
 		d128_unpacked_t u = {}; \
 		u.sign = sig; \
 		u.mantissa.value = (m); \
@@ -29,7 +29,7 @@
 		ASSERT_EQ(dec.lo, bindec.lo); \
 		ASSERT_EQ(dec.hi, bindec.hi); \
 		if (e != D128_EXP_NAN && e != D128_EXP_SNAN) \
-			CHECK_STD128(stddecimal, dec); \
+			CHECK_STD128(str, stddecimal, dec); \
 		u = {}; \
 		ASSERT_EQ(d128_unpack(&u, &dec), 0); \
 		ASSERT_EQ(u.sign, sig); \

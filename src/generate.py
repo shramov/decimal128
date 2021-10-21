@@ -27,4 +27,4 @@ for k,v in data.items():
     else:
         s = f'{s}DL'
 
-    output.write(f"""CHECK_D128("{binary}", {s}, {v['sign']}, {m}, {v['exponent']});\n""")
+    output.write(f"""CHECK_D128("{v['string']}", "{binary}", {s}, {v['sign']}, {m}, {v['exponent']});\n""")
